@@ -1,9 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
-import { ConfigService } from './_services/config.service';
+import { ConfigService, ExtHttp } from './_services';
 import { AppComponent } from './app.component';
+
+export function eHttp(backend: XHRBackend, options: RequestOptions, configService: ConfigService) {
+  return new ExtHttp(backend, options, configService);
+}
 
 @NgModule({
   declarations: [
@@ -14,7 +18,12 @@ import { AppComponent } from './app.component';
     HttpModule
   ],
   providers: [
-    ConfigService
+    ConfigService,
+    {
+      provide: ExtHttp,
+      useFactory: eHttp,
+      deps: [XHRBackend, RequestOptions, ConfigService]
+    }
   ],
   bootstrap: [AppComponent]
 })

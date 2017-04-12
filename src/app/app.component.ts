@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ConfigService } from './_services/config.service';
+import { URLSearchParams } from '@angular/http';
+import { ConfigService, ExtHttp } from './_services';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { ConfigService } from './_services/config.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private configService: ConfigService) {
-    
+  constructor(private configService: ConfigService, private extHttp: ExtHttp) {
+
   }
 }

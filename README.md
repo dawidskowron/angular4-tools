@@ -15,7 +15,7 @@ export const environment = {
 };
 ```
 ## ConfigService
-A injectable config service for get e.g API URL to HTTP requests.
+An injectable config service for getting e.g API URL to HTTP requests.
 For variables from above the service returns URL like https://api.example.com/v1/
 ```javascript
 @Injectable()
@@ -26,5 +26,33 @@ export class ConfigService {
 
     return this.getApiEndPoint() + '/' + path;
   }
+}
+```
+## ExtHttp service
+An injectable service which extends Http and adds API URL to each requests.
+```javascript
+// app.module.ts
+@NgModule({
+  ...
+  providers: [
+    ConfigService,
+    {
+      provide: ExtHttp,
+      useFactory: eHttp,
+      deps: [XHRBackend, RequestOptions, ConfigService]
+    }
+  ],
+  ...
+})
+```
+```javascript
+// our component class
+constructor(private extHttp: ExtHttp) {
+  let q = new URLSearchParams();
+  q.set('q', 'query');
+
+  this.extHttp.get('search', { search: search }).subscribe((response: Response) => {
+    // logic
+  });
 }
 ```
